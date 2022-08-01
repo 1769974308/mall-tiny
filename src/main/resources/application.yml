@@ -11,6 +11,11 @@ spring:
   mvc:
     pathmatch:
       matching-strategy: ant_path_matcher
+  flyway:
+    enabled: true #是否启用flyway(默认true)
+    locations: classpath:db/migration/sqlserver #sql脚本文件位置
+    baseline-on-migrate: true
+    clean-on-validation-error: true
 
 mybatis-plus:
   mapper-locations: classpath:/mapper/**/*.xml

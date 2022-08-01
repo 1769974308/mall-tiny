@@ -3,6 +3,7 @@ package com.macro.mall.tiny.common.exception;
 import com.macro.mall.tiny.common.api.CommonResult;
 import org.springframework.validation.BindException;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.Errors;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -29,27 +30,32 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(value = MethodArgumentNotValidException.class)
     public CommonResult handleValidException(MethodArgumentNotValidException e) {
         BindingResult bindingResult = e.getBindingResult();
-        String message = null;
-        if (bindingResult.hasErrors()) {
-            FieldError fieldError = bindingResult.getFieldError();
-            if (fieldError != null) {
-                message = fieldError.getField()+fieldError.getDefaultMessage();
-            }
+        StringBuilder stringBuilder = new StringBuilder();
+        for (Object errors : bindingResult.getAllErrors()){
+            stringBuilder.append("[");
+            stringBuilder.append(((FieldError) errors).getField() + ((FieldError) errors).getDefaultMessage());
+            stringBuilder.append("]");
         }
-        return CommonResult.validateFailed(message);
+        return CommonResult.validateFailed(stringBuilder.toString());
     }
 
     @ResponseBody
     @ExceptionHandler(value = BindException.class)
     public CommonResult handleValidException(BindException e) {
         BindingResult bindingResult = e.getBindingResult();
-        String message = null;
-        if (bindingResult.hasErrors()) {
-            FieldError fieldError = bindingResult.getFieldError();
-            if (fieldError != null) {
-                message = fieldError.getField()+fieldError.getDefaultMessage();
-            }
+        StringBuilder stringBuilder = new StringBuilder();
+        for (Object errors : bindingResult.getAllErrors()){
+            stringBuilder.append("[");
+            stringBuilder.append(((FieldError) errors).getField() + ((FieldError) errors).getDefaultMessage());
+            stringBuilder.append("]");
         }
-        return CommonResult.validateFailed(message);
+        return CommonResult.validateFailed(stringBuilder.toString());
+    }
+
+    @ResponseBody
+    @ExceptionHandler(value = Exception.class)
+    public CommonResult handleValidException(Exception e){
+        e.printStackTrace();
+        return CommonResult.validateFailed("【未知异常】"+e.getMessage());
     }
 }
