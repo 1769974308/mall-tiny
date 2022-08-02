@@ -1,5 +1,6 @@
 package com.macro.mall.tiny.config;
 
+import com.github.xiaoymin.knife4j.spring.annotations.EnableKnife4j;
 import com.macro.mall.tiny.common.config.BaseSwaggerConfig;
 import com.macro.mall.tiny.common.domain.SwaggerProperties;
 import org.springframework.beans.BeansException;
@@ -22,6 +23,7 @@ import java.util.stream.Collectors;
  */
 @Configuration
 @EnableSwagger2
+@EnableKnife4j
 public class SwaggerConfig extends BaseSwaggerConfig {
 
     @Override
