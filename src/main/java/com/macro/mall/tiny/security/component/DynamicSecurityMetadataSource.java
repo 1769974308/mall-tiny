@@ -21,11 +21,17 @@ public class DynamicSecurityMetadataSource implements FilterInvocationSecurityMe
     @Autowired
     private DynamicSecurityService dynamicSecurityService;
 
+    /**
+     * 读取到所有的资源
+     */
     @PostConstruct
     public void loadDataSource() {
         configAttributeMap = dynamicSecurityService.loadDataSource();
     }
 
+    /**
+     * 清除 在资源分配时清除掉
+     */
     public void clearDataSource() {
         configAttributeMap.clear();
         configAttributeMap = null;
@@ -33,7 +39,10 @@ public class DynamicSecurityMetadataSource implements FilterInvocationSecurityMe
 
     @Override
     public Collection<ConfigAttribute> getAttributes(Object o) throws IllegalArgumentException {
-        if (configAttributeMap == null) this.loadDataSource();
+        //在清除之后就会再次获取最新的资源信息
+        if (configAttributeMap == null) {
+            this.loadDataSource();
+        }
         List<ConfigAttribute>  configAttributes = new ArrayList<>();
         //获取当前访问的路径
         String url = ((FilterInvocation) o).getRequestUrl();

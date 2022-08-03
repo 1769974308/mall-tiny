@@ -5,6 +5,7 @@ import com.macro.mall.tiny.modules.ums.service.UmsAdminService;
 import com.macro.mall.tiny.modules.ums.service.UmsResourceService;
 import com.macro.mall.tiny.security.component.DynamicSecurityService;
 import com.macro.mall.tiny.security.config.SecurityConfig;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -22,6 +23,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * 自定义配置，用于配置如何获取用户信息及动态权限
  * Created by macro on 2019/11/9.
  */
+@Slf4j
 @Configuration
 public class MallSecurityConfig {
 
@@ -46,6 +48,7 @@ public class MallSecurityConfig {
                 for (UmsResource resource : resourceList) {
                     map.put(resource.getUrl(), new org.springframework.security.access.SecurityConfig(resource.getId() + ":" + resource.getName()));
                 }
+                log.info("UmsResource:{}",map);
                 return map;
             }
         };
