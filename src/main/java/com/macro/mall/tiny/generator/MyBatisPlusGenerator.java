@@ -21,16 +21,24 @@ import java.util.Scanner;
 public class MyBatisPlusGenerator {
 
     public static void main(String[] args) {
+        //当前项目路径
         String projectPath = System.getProperty("user.dir");
         String moduleName = scanner("模块名");
         String[] tableNames = scanner("表名，多个英文逗号分割").split(",");
         // 代码生成器
+        //数据源配置
         AutoGenerator autoGenerator = new AutoGenerator(initDataSourceConfig());
+        //全局配置
         autoGenerator.global(initGlobalConfig(projectPath));
+        //包相关配置
         autoGenerator.packageInfo(initPackageConfig(projectPath,moduleName));
+        //自定义配置
         autoGenerator.injection(initInjectionConfig(projectPath, moduleName));
+        //模板配置
         autoGenerator.template(initTemplateConfig());
+        //策略配置
         autoGenerator.strategy(initStrategyConfig(tableNames));
+        //模板引擎配置
         autoGenerator.execute(new VelocityTemplateEngine());
     }
 
@@ -54,6 +62,7 @@ public class MyBatisPlusGenerator {
      */
     private static GlobalConfig initGlobalConfig(String projectPath) {
         return new GlobalConfig.Builder()
+                //生成文件输出存放路径 = 当前项目路径 + 想存放到项目中的路径
                 .outputDir(projectPath + "/src/main/java")
                 .author("taotao")
                 .disableOpenDir()
